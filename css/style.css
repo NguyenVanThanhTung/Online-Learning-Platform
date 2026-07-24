@@ -1,0 +1,72 @@
+/* Global foundation styles */
+:root {
+  --brand-primary: #0d6efd;
+  --brand-primary-dark: #0b5ed7;
+  --surface: #ffffff;
+  --surface-muted: #f8f9fa;
+  --text: #1f2937;
+  --muted: #6c757d;
+  --border: #dee2e6;
+  --shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+  --radius: 0.75rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  background: var(--surface-muted);
+  color: var(--text);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.page-shell {
+  min-height: 100vh;
+}
+
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-main {
+  padding: 2rem 0 3rem;
+}
+
+.site-footer {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 2rem 0 1rem;
+}
+
+.page-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.content-section {
+  margin-bottom: 1.5rem;
+}
+
+.panel-heading {
+  margin-bottom: 1rem;
+}
+
+[data-controller] {
+  min-height: 1px;
+}
+
+@media (max-width: 767.98px) {
+  .site-main {
+    padding-top: 1rem;
+  }
+}
