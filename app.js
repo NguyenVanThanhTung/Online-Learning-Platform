@@ -17,7 +17,8 @@ const DEFAULT_COURSES = [
         lessonsCount: 12,
         duration: "8 hours",
         image: "images/html.svg",
-        description: "Learn the core foundations of web development with semantic HTML5 and modern CSS3."
+        description: "Learn the core foundations of web development with semantic HTML5 and modern CSS3.",
+        status: "Published"
     },
     {
         id: 2,
@@ -30,7 +31,8 @@ const DEFAULT_COURSES = [
         lessonsCount: 15,
         duration: "12 hours",
         image: "images/javascript.svg",
-        description: "Master modern JavaScript, asynchronous programming, and ES6+ features."
+        description: "Master modern JavaScript, asynchronous programming, and ES6+ features.",
+        status: "Published"
     },
     {
         id: 3,
@@ -43,7 +45,8 @@ const DEFAULT_COURSES = [
         lessonsCount: 8,
         duration: "6 hours",
         image: "images/uiux.svg",
-        description: "Understand user experience principles and create interactive prototypes using Figma."
+        description: "Understand user experience principles and create interactive prototypes using Figma.",
+        status: "Published"
     },
     {
         id: 4,
@@ -56,7 +59,8 @@ const DEFAULT_COURSES = [
         lessonsCount: 10,
         duration: "7 hours",
         image: "images/css.svg",
-        description: "Build responsive, beautiful layouts easily using CSS Flexbox, Grid, and preprocessor Sass."
+        description: "Build responsive, beautiful layouts easily using CSS Flexbox, Grid, and preprocessor Sass.",
+        status: "Draft"
     },
     {
         id: 5,
@@ -69,7 +73,8 @@ const DEFAULT_COURSES = [
         lessonsCount: 20,
         duration: "18 hours",
         image: "images/python.svg",
-        description: "Dive into data analysis, Pandas, NumPy, and basic machine learning with Python."
+        description: "Dive into data analysis, Pandas, NumPy, and basic machine learning with Python.",
+        status: "Published"
     },
     {
         id: 6,
@@ -82,7 +87,8 @@ const DEFAULT_COURSES = [
         lessonsCount: 12,
         duration: "10 hours",
         image: "images/marketing.svg",
-        description: "Scale business growth through targeted SEO strategies and high-converting social ads."
+        description: "Scale business growth through targeted SEO strategies and high-converting social ads.",
+        status: "Published"
     }
 ];
 
