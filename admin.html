@@ -49,7 +49,7 @@
             <div class="page-card p-4">
               <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
                 <h2 class="h4 mb-0">Course Management</h2>
-                <button id="add-course-button" class="btn btn-primary" type="button">Add New Course</button>
+                <button id="add-course-button" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#course-modal">Add New Course</button>
               </div>
               <div class="row g-2 mb-3">
                 <div class="col-md-6">
@@ -73,11 +73,74 @@
                 </div>
               </div>
               <div id="admin-course-table" class="table-responsive" data-admin-table></div>
+              
+              <!-- Khung phân trang (Pagination) -->
+              <nav aria-label="Course pagination" class="mt-3">
+                <ul id="admin-pagination" class="pagination justify-content-end mb-0"></ul>
+              </nav>
             </div>
           </section>
         </div>
       </div>
     </main>
+
+    <!-- Modal Thêm / Sửa Khóa Học -->
+    <div class="modal fade" id="course-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form id="course-form">
+            <div class="modal-header">
+              <h5 class="modal-title" id="course-modal-title">Add New Course</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" id="course-id" />
+              <div class="mb-3">
+                <label for="course-title-input" class="form-label">Title</label>
+                <input type="text" class="form-control" id="course-title-input" required minlength="5" />
+              </div>
+              <div class="mb-3">
+                <label for="course-category-input" class="form-label">Category</label>
+                <select class="form-select" id="course-category-input" required>
+                  <option value="web-dev">Web Dev</option>
+                  <option value="design">Design</option>
+                  <option value="data-science">Data Science</option>
+                  <option value="marketing">Marketing</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="course-instructor-input" class="form-label">Instructor Name</label>
+                <input type="text" class="form-control" id="course-instructor-input" required />
+              </div>
+              <div class="mb-3">
+                <label for="course-lessons-input" class="form-label">Lesson Count</label>
+                <input type="number" class="form-control" id="course-lessons-input" min="1" max="100" required />
+              </div>
+              <div class="mb-3">
+                <label for="course-price-input" class="form-label">Price ($)</label>
+                <input type="number" class="form-control" id="course-price-input" min="0" step="1" required />
+              </div>
+              <div class="mb-3">
+                <label for="course-rating-input" class="form-label">Rating (1.0 - 5.0)</label>
+                <input type="number" class="form-control" id="course-rating-input" min="1.0" max="5.0" step="0.1" required />
+              </div>
+              <div class="mb-3">
+                <label for="course-status-input" class="form-label">Status</label>
+                <select class="form-select" id="course-status-input" required>
+                  <option value="published">Published</option>
+                  <option value="draft">Draft</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="save-course-btn">Save Course</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
     <footer class="site-footer">
       <div class="container">

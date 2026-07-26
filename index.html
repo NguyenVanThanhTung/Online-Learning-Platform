@@ -27,7 +27,7 @@
               <li class="nav-item"><a class="nav-link" href="course-detail.html">Details</a></li>
               <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
             </ul>
-            <form class="d-flex gap-2" role="search">
+            <form class="d-flex gap-2" role="search" onsubmit="return false;">
               <input
                 id="course-search"
                 class="form-control"
@@ -83,7 +83,7 @@
             </div>
           </div>
           <div id="course-grid" class="row g-4" data-course-grid></div>
-          <div id="course-empty-state" class="empty-state d-none" data-empty-state>No courses found.</div>
+          <div id="course-empty-state" class="empty-state d-none mt-3" data-empty-state>No courses found.</div>
         </section>
       </div>
     </main>
