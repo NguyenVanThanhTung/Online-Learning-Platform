@@ -1,627 +1,204 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Detail & Player - LearnHub</title>
+    <title>Course Detail - LearnHub</title>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     
-    <!-- Bootstrap CSS CDN + Bootstrap Icons CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-    
-    <!-- Custom Style -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <!-- Shared Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
+    <nav class="navbar navbar-expand-lg navbar-custom shadow-sm">
         <div class="container">
             <a class="navbar-brand-custom" href="index.html" id="nav-logo">
                 <i class="bi bi-mortarboard-fill"></i>
                 <span>LearnHub</span>
             </a>
-            
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 gap-2">
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom active" href="index.html" id="nav-home">Courses</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="#" id="nav-about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="#" id="nav-contact">Contact</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom active" href="index.html">Courses</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Contact</a></li>
                 </ul>
-                
                 <div class="d-flex align-items-center flex-column flex-lg-row gap-3">
-                    <div class="nav-search w-100">
-                        <i class="bi bi-search"></i>
-                        <input type="text" class="form-control" id="nav-search-input" placeholder="Search courses...">
-                    </div>
-                    <button class="btn btn-outline-primary btn-login w-100" id="btn-login-trigger">Login</button>
+                    <button class="btn btn-outline-primary btn-login w-100">Login</button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Header Section for Course Title (Dark theme style) -->
-    <section class="detail-header-section">
-        <div class="container">
-            <nav aria-label="breadcrumb" class="detail-breadcrumb">
-                <ol class="breadcrumb mb-2">
-                    <li class="breadcrumb-item"><a href="index.html">Courses</a></li>
-                    <li class="breadcrumb-item"><a href="#" id="course-category-crumb">Web Dev</a></li>
-                    <li class="breadcrumb-item active text-white" aria-current="page" id="course-title-crumb">JavaScript Essentials</li>
-                </ol>
-            </nav>
-            
-            <h1 class="detail-title" id="course-detail-title">JavaScript Essentials & ES6+ Concepts</h1>
-            
-            <div class="detail-meta">
-                <span class="rating-box">
-                    <span class="rating-avg" id="course-rating-avg"><i class="bi bi-star-fill"></i> 4.8</span>
-                    <span id="course-rating-count">(120 ratings)</span>
-                </span>
-                <span>•</span>
-                <span><i class="bi bi-people-fill"></i> <span id="course-student-count">1,200</span> students enrolled</span>
-                <span>•</span>
-                <span>Created by <strong class="text-white" id="course-instructor-name">Jane Smith</strong></span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main Content Workspace -->
-    <main class="container py-5">
+    <!-- Main Content -->
+    <main class="container py-5 animate-fade">
         <div class="row g-4">
             
-            <!-- Left Column: Media Player, Content details, Curriculum, Quiz -->
-            <div class="col-12 col-lg-8">
+            <div class="col-lg-8">
                 
-                <!-- Simulated Lesson Video Player -->
+                <!-- Video Player Container with Dynamic Image Placeholder -->
                 <div class="video-player-container mb-4" id="video-player">
-                    <img src="images/javascript.svg" alt="Video Player Placeholder" id="video-thumbnail-placeholder">
+                    <img src="images/javascript.svg" alt="Video Player Placeholder" id="video-thumbnail-placeholder" class="w-100 h-100 object-fit-cover">
                     <div class="video-player-overlay">
-                        <div class="play-btn-circle" id="play-video-btn" aria-label="Play Lesson Video">
+                        <div class="play-btn-circle" id="play-video-btn">
                             <i class="bi bi-play-fill"></i>
                         </div>
-                        <h4 class="mt-3 fw-bold" id="video-player-title">Lesson 1: Introduction to JavaScript</h4>
-                        <p class="text-white-50" style="font-size: 0.9rem;">Simulation Player Mode</p>
+                        <h4 class="mt-3 fw-bold text-white" id="video-player-title">Preview Video</h4>
                     </div>
                 </div>
 
-                <!-- Tabs/Blocks for Information -->
-                <section class="mb-5">
-                    <h2 class="detail-section-title">
-                        <i class="bi bi-compass"></i> What You'll Learn
-                    </h2>
-                    <div class="learning-bullets" id="learning-outcomes">
-                        <div class="learning-bullet-item">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span>Understand the fundamentals of JavaScript variables, data types, and operators.</span>
-                        </div>
-                        <div class="learning-bullet-item">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span>Master ES6+ modern features such as arrow functions, destructuring, and template literals.</span>
-                        </div>
-                        <div class="learning-bullet-item">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span>Perform DOM manipulation and manage web browser events interactively.</span>
-                        </div>
-                        <div class="learning-bullet-item">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span>Work with asynchronous programming, promises, API calls and fetch.</span>
-                        </div>
+                <!-- Course Metadata -->
+                <h1 class="fw-bold mb-2" id="course-detail-title">Loading...</h1>
+                <div class="d-flex flex-wrap align-items-center text-muted mb-3 gap-3">
+                    <span class="text-warning fw-bold"><i class="bi bi-star-fill"></i> <span id="course-rating-avg">0.0</span></span>
+                    <span id="course-rating-count">(0 ratings)</span>
+                </div>
+                <p class="mb-4 text-muted">By: <strong class="text-dark" id="course-instructor-name">Loading...</strong> <span class="mx-2">|</span> <span id="course-category-crumb">Loading...</span></p>
+
+                <hr class="mb-4">
+
+                <!-- Learning Outcomes -->
+                <h4 class="fw-bold mb-3">What You'll Learn</h4>
+                <div class="row mb-4" id="detail-learn-list">
+                    <div class="col-md-6 mb-2"><i class="bi bi-check2 text-success me-2"></i> ES6+ modern JavaScript syntax</div>
+                    <div class="col-md-6 mb-2"><i class="bi bi-check2 text-success me-2"></i> DOM manipulation and events</div>
+                    <div class="col-md-6 mb-2"><i class="bi bi-check2 text-success me-2"></i> Async / Await and Fetch API</div>
+                    <div class="col-md-6 mb-2"><i class="bi bi-check2 text-success me-2"></i> Build real projects from scratch</div>
+                </div>
+
+                <hr class="mb-4">
+
+                <h4 class="fw-bold mb-3">Description</h4>
+                <div id="detail-description" class="mb-5 text-muted" style="line-height: 1.7; font-size: 0.95rem;">
+                    <p>Master the required skills with the most complete course on the market. Whether you want to establish a career as a developer or build interactive UI components, this course covers everything from basic to advanced concepts.</p>
+                </div>
+
+                <!-- Curriculum & Progress Tracker -->
+                <h4 class="fw-bold mb-3 mt-5">Course Curriculum</h4>
+                
+                <div class="progress-tracker-container mb-4">
+                    <div class="progress-tracker-header d-flex justify-content-between mb-1">
+                        <span>Course Progress</span>
+                        <span id="progress-text" class="text-muted small">0 / 3 lessons completed (0%)</span>
                     </div>
-                </section>
-
-                <section class="mb-5">
-                    <h2 class="detail-section-title">
-                        <i class="bi bi-card-text"></i> Course Description
-                    </h2>
-                    <div class="text-muted" id="course-description-content" style="line-height: 1.7; font-size: 0.95rem;">
-                        <p>JavaScript is the most popular programming language in the world and the core language of the web. This comprehensive course is designed to take you from a complete beginner with no programming background to an advanced JavaScript developer capable of building complex dynamic web applications.</p>
-                        <p>We start with programming basics (variables, loops, conditions, functions) and move step-by-step into intermediate topics like DOM manipulation and event handlers. Finally, we dive deep into modern ES6+ syntaxes and async programming, preparing you for frontend frameworks like React or Vue.</p>
+                    <div class="progress-custom progress" style="height: 10px;">
+                        <div class="progress-bar-custom progress-bar bg-success" id="progress-bar-fill" role="progressbar" style="width: 0%;"></div>
                     </div>
-                </section>
+                </div>
 
-                <!-- Curriculum Section (Accordion) -->
-                <section class="mb-5" id="curriculum-section">
-                    <h2 class="detail-section-title">
-                        <i class="bi bi-list-check"></i> Curriculum & Progress
-                    </h2>
-                    
-                    <!-- Progress Bar Tracker -->
-                    <div class="progress-tracker-container">
-                        <div class="progress-tracker-header">
-                            <span>Your Progress</span>
-                            <span id="progress-text">0 / 12 lessons completed (0%)</span>
-                        </div>
-                        <div class="progress-custom">
-                            <div class="progress-bar-custom" id="progress-bar-fill" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-
-                    <!-- Accordion Bootstrap -->
-                    <div class="accordion accordion-custom" id="courseCurriculum">
-                        
-                        <!-- Section 1 Accordion -->
-                        <div class="accordion-item" id="accordion-section-1">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    <span class="d-flex align-items-center gap-2">
-                                        Section 1: Getting Started Fundamentals
-                                        <span class="badge-section-completed badge bg-success" id="badge-section-1"><i class="bi bi-check-circle-fill"></i> Done</span>
-                                    </span>
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#courseCurriculum">
-                                <div class="accordion-body">
-                                    <div class="lesson-list">
-                                        <div class="lesson-list-item" data-lesson-id="1-1">
-                                            <div class="lesson-left">
-                                                <input type="checkbox" class="lesson-checkbox" id="chk-1-1" data-lesson-id="1-1">
-                                                <label for="chk-1-1" class="mb-0">1.1 Introduction to JS & Hello World</label>
-                                            </div>
-                                            <span class="lesson-duration">15 mins</span>
-                                        </div>
-                                        <div class="lesson-list-item" data-lesson-id="1-2">
-                                            <div class="lesson-left">
-                                                <input type="checkbox" class="lesson-checkbox" id="chk-1-2" data-lesson-id="1-2">
-                                                <label for="chk-1-2" class="mb-0">1.2 Variables and Constants</label>
-                                            </div>
-                                            <span class="lesson-duration">20 mins</span>
-                                        </div>
-                                        <div class="lesson-list-item" data-lesson-id="1-3">
-                                            <div class="lesson-left">
-                                                <input type="checkbox" class="lesson-checkbox" id="chk-1-3" data-lesson-id="1-3">
-                                                <label for="chk-1-3" class="mb-0">1.3 Data Types and Operators</label>
-                                            </div>
-                                            <span class="lesson-duration">25 mins</span>
-                                        </div>
+                <div class="accordion accordion-custom" id="curriculumAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                <span class="d-flex align-items-center gap-2">
+                                    Section 1 — Core Basics
+                                    <span class="badge-section-completed badge bg-success" id="badge-section-1" style="display: none;"><i class="bi bi-check-circle-fill"></i> Done</span>
+                                </span>
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#curriculumAccordion">
+                            <div class="accordion-body p-0">
+                                
+                                <div class="lesson-list">
+                                    <div class="lesson-list-item p-3 border-bottom d-flex align-items-center">
+                                        <input type="checkbox" class="lesson-checkbox me-2" id="chk-1-1" data-lesson-id="1-1">
+                                        <label for="chk-1-1" class="mb-0 cursor-pointer">Lesson 1: Introduction</label>
                                     </div>
-                                    
-                                    <!-- Quiz Section Trigger -->
-                                    <div class="quiz-section-trigger-wrapper">
-                                        <button class="btn btn-outline-primary btn-sm btn-quiz-trigger" data-section="1">
-                                            <i class="bi bi-patch-question-fill me-1"></i> Take Section 1 Quiz
-                                        </button>
+                                    <div class="lesson-list-item p-3 border-bottom d-flex align-items-center">
+                                        <input type="checkbox" class="lesson-checkbox me-2" id="chk-1-2" data-lesson-id="1-2">
+                                        <label for="chk-1-2" class="mb-0 cursor-pointer">Lesson 2: Setup Environment</label>
                                     </div>
-                                    
-                                    <!-- Inline Quiz Panel (Static view for demonstration) -->
-                                    <div class="quiz-panel-inline" id="quiz-panel-1">
-                                        <div class="quiz-header">
-                                            <span class="quiz-title">Section 1 Quiz</span>
-                                            <span class="badge bg-secondary">3 Questions</span>
-                                        </div>
-                                        <div class="quiz-body">
-                                            <form class="quiz-form" data-section="1">
-                                                <!-- Q1 -->
-                                                <div class="quiz-question-block">
-                                                    <p class="quiz-question-text">Question 1: Which keyword is used to declare a block-scoped variable that can be reassigned?</p>
-                                                    <div class="quiz-options">
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q1-1" id="q1-1-a" value="var" required>
-                                                            <label for="q1-1-a" class="quiz-option-label">var</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q1-1" id="q1-1-b" value="let">
-                                                            <label for="q1-1-b" class="quiz-option-label">let</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q1-1" id="q1-1-c" value="const">
-                                                            <label for="q1-1-c" class="quiz-option-label">const</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Q2 -->
-                                                <div class="quiz-question-block">
-                                                    <p class="quiz-question-text">Question 2: What is the correct data type of `typeof NaN`?</p>
-                                                    <div class="quiz-options">
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q1-2" id="q1-2-a" value="number" required>
-                                                            <label for="q1-2-a" class="quiz-option-label">number</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q1-2" id="q1-2-b" value="undefined">
-                                                            <label for="q1-2-b" class="quiz-option-label">undefined</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q1-2" id="q1-2-c" value="string">
-                                                            <label for="q1-2-c" class="quiz-option-label">string</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Q3 -->
-                                                <div class="quiz-question-block">
-                                                    <p class="quiz-question-text">Question 3: How do you write a comment in JavaScript?</p>
-                                                    <div class="quiz-options">
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q1-3" id="q1-3-a" value="slash" required>
-                                                            <label for="q1-3-a" class="quiz-option-label">// This is a comment</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q1-3" id="q1-3-b" value="hash">
-                                                            <label for="q1-3-b" class="quiz-option-label"># This is a comment</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q1-3" id="q1-3-c" value="xml">
-                                                            <label for="q1-3-c" class="quiz-option-label">&lt;!-- Comment --&gt;</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Quiz Feedback Box -->
-                                                <div class="quiz-feedback-box pass" id="quiz-feedback-1">
-                                                    <h5 class="fw-bold mb-1"><i class="bi bi-check-circle-fill"></i> Passed! (3/3 correct)</h5>
-                                                    <p class="mb-0 small">Great job! You have fully understood this section. You can now unlock and proceed to Section 2.</p>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="quiz-footer">
-                                            <button type="button" class="btn btn-secondary btn-sm" id="btn-quiz-retake-1" style="display:none;">Retake Quiz</button>
-                                            <button type="submit" class="btn btn-primary btn-sm" id="btn-quiz-submit-1">Submit Quiz</button>
-                                            <button type="button" class="btn btn-success btn-sm" id="btn-quiz-next-1" style="display:none;">Continue to next section <i class="bi bi-arrow-right"></i></button>
-                                        </div>
+                                    <div class="lesson-list-item p-3 border-bottom d-flex align-items-center">
+                                        <input type="checkbox" class="lesson-checkbox me-2" id="chk-1-3" data-lesson-id="1-3">
+                                        <label for="chk-1-3" class="mb-0 cursor-pointer">Lesson 3: Basic Syntax</label>
                                     </div>
-
                                 </div>
+                                
+                                <!-- Quiz Trigger Button -->
+                                <div class="quiz-section-trigger-wrapper p-3 bg-light">
+                                    <button class="btn btn-outline-primary btn-sm btn-quiz-trigger" data-section="1">
+                                        <i class="bi bi-patch-question-fill me-1"></i> Take Section 1 Quiz
+                                    </button>
+                                </div>
+                                
+                                <!-- Inline Quiz Panel -->
+                                <div class="quiz-panel-inline p-4 border-top" id="quiz-panel-1" style="display: none;">
+                                    <div class="quiz-header mb-3">
+                                        <h5 class="quiz-title fw-bold">Section 1 Quiz</h5>
+                                    </div>
+                                    <div class="quiz-body">
+                                        <form class="quiz-form" data-section="1">
+                                            <div class="quiz-question-block mb-3">
+                                                <p class="quiz-question-text fw-semibold mb-2">Q1: Which keyword declares a block-scoped variable?</p>
+                                                <div class="quiz-options">
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="q1-1" id="q1-1-a" value="var"><label for="q1-1-a" class="form-check-label">var</label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="q1-1" id="q1-1-b" value="let"><label for="q1-1-b" class="form-check-label">let</label></div>
+                                                </div>
+                                            </div>
+                                            <div class="quiz-question-block mb-3">
+                                                <p class="quiz-question-text fw-semibold mb-2">Q2: Which operator is strict equality?</p>
+                                                <div class="quiz-options">
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="q1-2" id="q1-2-a" value="=="><label for="q1-2-a" class="form-check-label">==</label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="q1-2" id="q1-2-b" value="==="><label for="q1-2-b" class="form-check-label">===</label></div>
+                                                </div>
+                                            </div>
+                                            <div class="quiz-feedback-box" id="quiz-feedback-1"></div>
+                                            <div class="quiz-footer mt-3">
+                                                <button type="submit" class="btn btn-primary btn-sm" id="btn-quiz-submit-1">Submit Quiz</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
-
-                        <!-- Section 2 Accordion -->
-                        <div class="accordion-item" id="accordion-section-2">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    <span class="d-flex align-items-center gap-2">
-                                        Section 2: Functions, Objects & Arrays
-                                        <span class="badge-section-completed badge bg-success" id="badge-section-2"><i class="bi bi-check-circle-fill"></i> Done</span>
-                                    </span>
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#courseCurriculum">
-                                <div class="accordion-body">
-                                    <div class="lesson-list">
-                                        <div class="lesson-list-item" data-lesson-id="2-1">
-                                            <div class="lesson-left">
-                                                <input type="checkbox" class="lesson-checkbox" id="chk-2-1" data-lesson-id="2-1">
-                                                <label for="chk-2-1" class="mb-0">2.1 Functions and Scope</label>
-                                            </div>
-                                            <span class="lesson-duration">20 mins</span>
-                                        </div>
-                                        <div class="lesson-list-item" data-lesson-id="2-2">
-                                            <div class="lesson-left">
-                                                <input type="checkbox" class="lesson-checkbox" id="chk-2-2" data-lesson-id="2-2">
-                                                <label for="chk-2-2" class="mb-0">2.2 Object Basics and Properties</label>
-                                            </div>
-                                            <span class="lesson-duration">15 mins</span>
-                                        </div>
-                                        <div class="lesson-list-item" data-lesson-id="2-3">
-                                            <div class="lesson-left">
-                                                <input type="checkbox" class="lesson-checkbox" id="chk-2-3" data-lesson-id="2-3">
-                                                <label for="chk-2-3" class="mb-0">2.3 Array Methods (map, filter, reduce)</label>
-                                            </div>
-                                            <span class="lesson-duration">30 mins</span>
-                                        </div>
-                                        <div class="lesson-list-item" data-lesson-id="2-4">
-                                            <div class="lesson-left">
-                                                <input type="checkbox" class="lesson-checkbox" id="chk-2-4" data-lesson-id="2-4">
-                                                <label for="chk-2-4" class="mb-0">2.4 JSON and String Methods</label>
-                                            </div>
-                                            <span class="lesson-duration">15 mins</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Quiz Section Trigger -->
-                                    <div class="quiz-section-trigger-wrapper">
-                                        <button class="btn btn-outline-primary btn-sm btn-quiz-trigger" data-section="2">
-                                            <i class="bi bi-patch-question-fill me-1"></i> Take Section 2 Quiz
-                                        </button>
-                                    </div>
-
-                                    <!-- Inline Quiz Panel -->
-                                    <div class="quiz-panel-inline" id="quiz-panel-2">
-                                        <div class="quiz-header">
-                                            <span class="quiz-title">Section 2 Quiz</span>
-                                            <span class="badge bg-secondary">3 Questions</span>
-                                        </div>
-                                        <div class="quiz-body">
-                                            <form class="quiz-form" data-section="2">
-                                                <!-- Q1 -->
-                                                <div class="quiz-question-block">
-                                                    <p class="quiz-question-text">Question 1: Which array method creates a new array with all elements that pass the test implemented by the provided function?</p>
-                                                    <div class="quiz-options">
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q2-1" id="q2-1-a" value="map" required>
-                                                            <label for="q2-1-a" class="quiz-option-label">map()</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q2-1" id="q2-1-b" value="filter">
-                                                            <label for="q2-1-b" class="quiz-option-label">filter()</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q2-1" id="q2-1-c" value="find">
-                                                            <label for="q2-1-c" class="quiz-option-label">find()</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Q2 -->
-                                                <div class="quiz-question-block">
-                                                    <p class="quiz-question-text">Question 2: What is the scope of a variable declared inside a function using `var`?</p>
-                                                    <div class="quiz-options">
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q2-2" id="q2-2-a" value="global" required>
-                                                            <label for="q2-2-a" class="quiz-option-label">Global scope</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q2-2" id="q2-2-b" value="block">
-                                                            <label for="q2-2-b" class="quiz-option-label">Block scope</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q2-2" id="q2-2-c" value="function">
-                                                            <label for="q2-2-c" class="quiz-option-label">Function scope</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Q3 -->
-                                                <div class="quiz-question-block">
-                                                    <p class="quiz-question-text">Question 3: How do you retrieve value from a JSON string?</p>
-                                                    <div class="quiz-options">
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q2-3" id="q2-3-a" value="parse" required>
-                                                            <label for="q2-3-a" class="quiz-option-label">JSON.parse()</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q2-3" id="q2-3-b" value="stringify">
-                                                            <label for="q2-3-b" class="quiz-option-label">JSON.stringify()</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q2-3" id="q2-3-c" value="convert">
-                                                            <label for="q2-3-c" class="quiz-option-label">JSON.convert()</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Feedback -->
-                                                <div class="quiz-feedback-box" id="quiz-feedback-2"></div>
-                                            </form>
-                                        </div>
-                                        <div class="quiz-footer">
-                                            <button type="button" class="btn btn-secondary btn-sm" id="btn-quiz-retake-2" style="display:none;">Retake Quiz</button>
-                                            <button type="submit" class="btn btn-primary btn-sm" id="btn-quiz-submit-2">Submit Quiz</button>
-                                            <button type="button" class="btn btn-success btn-sm" id="btn-quiz-next-2" style="display:none;">Continue to next section <i class="bi bi-arrow-right"></i></button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Section 3 Accordion -->
-                        <div class="accordion-item" id="accordion-section-3">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    <span class="d-flex align-items-center gap-2">
-                                        Section 3: ES6+ Modern Features & Async
-                                        <span class="badge-section-completed badge bg-success" id="badge-section-3"><i class="bi bi-check-circle-fill"></i> Done</span>
-                                    </span>
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#courseCurriculum">
-                                <div class="accordion-body">
-                                    <div class="lesson-list">
-                                        <div class="lesson-list-item" data-lesson-id="3-1">
-                                            <div class="lesson-left">
-                                                <input type="checkbox" class="lesson-checkbox" id="chk-3-1" data-lesson-id="3-1">
-                                                <label for="chk-3-1" class="mb-0">3.1 Arrow Functions & Destructuring</label>
-                                            </div>
-                                            <span class="lesson-duration">20 mins</span>
-                                        </div>
-                                        <div class="lesson-list-item" data-lesson-id="3-2">
-                                            <div class="lesson-left">
-                                                <input type="checkbox" class="lesson-checkbox" id="chk-3-2" data-lesson-id="3-2">
-                                                <label for="chk-3-2" class="mb-0">3.2 Classes and OOP Inheritance</label>
-                                            </div>
-                                            <span class="lesson-duration">25 mins</span>
-                                        </div>
-                                        <div class="lesson-list-item" data-lesson-id="3-3">
-                                            <div class="lesson-left">
-                                                <input type="checkbox" class="lesson-checkbox" id="chk-3-3" data-lesson-id="3-3">
-                                                <label for="chk-3-3" class="mb-0">3.3 Asynchronous Promises and await</label>
-                                            </div>
-                                            <span class="lesson-duration">30 mins</span>
-                                        </div>
-                                        <div class="lesson-list-item" data-lesson-id="3-4">
-                                            <div class="lesson-left">
-                                                <input type="checkbox" class="lesson-checkbox" id="chk-3-4" data-lesson-id="3-4">
-                                                <label for="chk-3-4" class="mb-0">3.4 Fetch API & HTTP requests</label>
-                                            </div>
-                                            <span class="lesson-duration">25 mins</span>
-                                        </div>
-                                        <div class="lesson-list-item" data-lesson-id="3-5">
-                                            <div class="lesson-left">
-                                                <input type="checkbox" class="lesson-checkbox" id="chk-3-5" data-lesson-id="3-5">
-                                                <label for="chk-3-5" class="mb-0">3.5 Error Handling (try...catch)</label>
-                                            </div>
-                                            <span class="lesson-duration">15 mins</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Quiz Section Trigger -->
-                                    <div class="quiz-section-trigger-wrapper">
-                                        <button class="btn btn-outline-primary btn-sm btn-quiz-trigger" data-section="3">
-                                            <i class="bi bi-patch-question-fill me-1"></i> Take Section 3 Quiz
-                                        </button>
-                                    </div>
-
-                                    <!-- Inline Quiz Panel -->
-                                    <div class="quiz-panel-inline" id="quiz-panel-3">
-                                        <div class="quiz-header">
-                                            <span class="quiz-title">Section 3 Quiz</span>
-                                            <span class="badge bg-secondary">3 Questions</span>
-                                        </div>
-                                        <div class="quiz-body">
-                                            <form class="quiz-form" data-section="3">
-                                                <!-- Q1 -->
-                                                <div class="quiz-question-block">
-                                                    <p class="quiz-question-text">Question 1: What is the result of resolving a Promise inside an `async` function?</p>
-                                                    <div class="quiz-options">
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q3-1" id="q3-1-a" value="await" required>
-                                                            <label for="q3-1-a" class="quiz-option-label">It returns a Promise</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q3-1" id="q3-1-b" value="value">
-                                                            <label for="q3-1-b" class="quiz-option-label">It returns the resolved value</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q3-1" id="q3-1-c" value="error">
-                                                            <label for="q3-1-c" class="quiz-option-label">It throws an error</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Q2 -->
-                                                <div class="quiz-question-block">
-                                                    <p class="quiz-question-text">Question 2: Which symbol is used for Template Literals in JS?</p>
-                                                    <div class="quiz-options">
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q3-2" id="q3-2-a" value="quote" required>
-                                                            <label for="q3-2-a" class="quiz-option-label">Single quotes ('')</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q3-2" id="q3-2-b" value="backtick">
-                                                            <label for="q3-2-b" class="quiz-option-label">Backticks (``)</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q3-2" id="q3-2-c" value="double">
-                                                            <label for="q3-2-c" class="quiz-option-label">Double quotes ("")</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Q3 -->
-                                                <div class="quiz-question-block">
-                                                    <p class="quiz-question-text">Question 3: How do you handle exceptions in modern async JS?</p>
-                                                    <div class="quiz-options">
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q3-3" id="q3-3-a" value="try" required>
-                                                            <label for="q3-3-a" class="quiz-option-label">try...catch blocks</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q3-3" id="q3-3-b" value="if">
-                                                            <label for="q3-3-b" class="quiz-option-label">if...else blocks</label>
-                                                        </div>
-                                                        <div class="quiz-option-item">
-                                                            <input type="radio" name="q3-3" id="q3-3-c" value="handler">
-                                                            <label for="q3-3-c" class="quiz-option-label">window.onerror handlers</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Feedback -->
-                                                <div class="quiz-feedback-box" id="quiz-feedback-3"></div>
-                                            </form>
-                                        </div>
-                                        <div class="quiz-footer">
-                                            <button type="button" class="btn btn-secondary btn-sm" id="btn-quiz-retake-3" style="display:none;">Retake Quiz</button>
-                                            <button type="submit" class="btn btn-primary btn-sm" id="btn-quiz-submit-3">Submit Quiz</button>
-                                            <button type="button" class="btn btn-success btn-sm" id="btn-quiz-next-3" style="display:none;">Continue to next section <i class="bi bi-arrow-right"></i></button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-                </section>
-
+                </div>
             </div>
 
-            <!-- Right Column: Sticky Pricing, Sidebar info, Advantages -->
-            <div class="col-12 col-lg-4">
+            <!-- Sticky Sidebar Card -->
+            <div class="col-lg-4">
                 <aside class="sticky-sidebar">
-                    <div class="purchase-card">
-                        <div class="purchase-card-img d-none d-lg-block">
-                            <img src="images/javascript.svg" alt="Course Thumbnail" id="course-sidebar-thumbnail">
-                        </div>
-                        <div class="purchase-card-body">
-                            <div class="purchase-price-box">
-                                <span class="purchase-price" id="course-sidebar-price">$49</span>
-                                <span class="text-muted text-decoration-line-through small" id="course-sidebar-oldprice" style="display: none;">$99</span>
+                    <div class="card purchase-card shadow-sm border-0 overflow-hidden">
+                        <img src="images/javascript.svg" alt="Course Thumbnail" id="course-sidebar-thumbnail" class="card-img-top">
+                        <div class="card-body purchase-card-body">
+                            <div class="purchase-price-box mb-3">
+                                <span class="purchase-price fs-2 fw-bold" id="course-sidebar-price">Loading...</span>
+                                <span class="text-muted small ms-2">One-time payment</span>
                             </div>
-                            
-                            <button class="btn btn-primary btn-enroll-detail" id="btn-enroll-action">Enroll Now</button>
-                            
-                            <div class="course-includes-list">
-                                <p class="fw-bold mb-2 text-dark" style="font-size: 0.95rem;">This course includes:</p>
-                                <div class="course-includes-item">
-                                    <i class="bi bi-play-btn-fill"></i>
-                                    <span>12 hours on-demand video</span>
-                                </div>
-                                <div class="course-includes-item">
-                                    <i class="bi bi-infinity"></i>
-                                    <span>Lifetime access to course material</span>
-                                </div>
-                                <div class="course-includes-item">
-                                    <i class="bi bi-award-fill"></i>
-                                    <span>Certificate of Completion</span>
-                                </div>
-                                <div class="course-includes-item">
-                                    <i class="bi bi-phone-fill"></i>
-                                    <span>Access on mobile and tablet</span>
-                                </div>
+                            <button class="btn btn-primary btn-enroll-detail w-100 mb-3">Enroll Now <i class="bi bi-arrow-right"></i></button>
+                            <div class="course-includes-list small">
+                                <p class="fw-bold mb-2 text-dark">This course includes:</p>
+                                <div class="course-includes-item mb-2"><i class="bi bi-play-btn-fill me-2 text-success"></i> <span id="sidebar-lessons">12</span> video lessons</div>
+                                <div class="course-includes-item mb-2"><i class="bi bi-infinity me-2 text-success"></i> Lifetime access</div>
+                                <div class="course-includes-item mb-2"><i class="bi bi-award-fill me-2 text-success"></i> Certificate on completion</div>
+                                <div class="course-includes-item"><i class="bi bi-phone-fill me-2 text-success"></i> Mobile-friendly</div>
                             </div>
                         </div>
                     </div>
                 </aside>
             </div>
-
+            
         </div>
     </main>
 
-    <!-- Shared Footer -->
     <footer class="footer-custom pt-5 pb-3">
         <div class="container">
-            <div class="row g-4 mb-4">
-                <div class="col-12 col-md-5">
-                    <h4 class="footer-title d-flex align-items-center gap-2">
-                        <i class="bi bi-mortarboard-fill text-gradient"></i> LearnHub
-                    </h4>
-                    <p style="font-size: 0.95rem; line-height: 1.6; max-width: 380px;">LearnHub is a premium e-learning platform providing expert-led online courses to grow your technical and design skills. Learn at your own pace from anywhere in the world.</p>
-                </div>
-                <div class="col-6 col-md-3">
-                    <h4 class="footer-title">Quick Links</h4>
-                    <a href="index.html" class="footer-link">All Courses</a>
-                    <a href="admin.html" class="footer-link">Admin Dashboard</a>
-                    <a href="#" class="footer-link">About Us</a>
-                    <a href="#" class="footer-link">Contact</a>
-                </div>
-                <div class="col-6 col-md-4">
-                    <h4 class="footer-title">Contact</h4>
-                    <p class="mb-2"><i class="bi bi-envelope-fill me-2"></i> support@learnhub.edu</p>
-                    <p class="mb-2"><i class="bi bi-telephone-fill me-2"></i> +84 (24) 1234-5678</p>
-                    <p class="mb-0"><i class="bi bi-geo-alt-fill me-2"></i> 123 Learning Street, Da Nang, Vietnam</p>
-                </div>
-            </div>
-            
             <div class="copyright-line pt-3 text-center">
-                <p class="mb-0">&copy; 2026 LearnHub. Designed & Developed by Group X. Final Group Exam.</p>
+                <p class="mb-0">&copy; 2026 LearnHub. Designed & Developed by Group X.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Bootstrap Bundle JS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Link JS files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
     <script src="detail.js"></script>
 </body>
