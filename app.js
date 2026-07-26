@@ -113,7 +113,6 @@ function saveCourses(courses) {
 // HÀM KHỞI TẠO ỨNG DỤNG (INDEX PAGE)
 // ==========================================
 function initApp() {
-    // Đảm bảo dữ liệu khởi tạo sẵn trong localStorage
     getCourses();
 
     // Các biến trạng thái bộ lọc (Filter & Search State)
@@ -124,8 +123,6 @@ function initApp() {
     // DOM Elements
     const coursesGrid = document.getElementById('courses-grid');
     const categoryTabs = document.querySelectorAll('.category-tab');
-    const navSearchInput = document.getElementById('nav-search-input');
-    const navSearchClear = document.getElementById('nav-search-clear');
     const gridSearchInput = document.getElementById('grid-search-input');
     const sortDropdown = document.getElementById('sort-dropdown');
     const noCoursesMessage = document.getElementById('no-courses-message');
@@ -152,18 +149,18 @@ function initApp() {
             );
         }
 
-        // 3. Sắp xếp (Sorting)
+        // 3. Sắp xếp (Sorting) - Dùng [...courses] để tránh làm thay đổi mảng gốc trong localStorage
+        let sortedCourses = [...courses];
         if (currentSort === 'price-asc') {
-            courses.sort((a, b) => a.price - b.price);
+            sortedCourses.sort((a, b) => a.price - b.price);
         } else if (currentSort === 'price-desc') {
-            courses.sort((a, b) => b.price - a.price);
+            sortedCourses.sort((a, b) => b.price - a.price);
         } else if (currentSort === 'rating-desc') {
-            courses.sort((a, b) => b.rating - a.rating);
+            sortedCourses.sort((a, b) => b.rating - a.rating);
         }
-        // Trường hợp 'default' giữ nguyên thứ tự ban đầu
 
         // 4. Hiển thị kết quả lên Grid hoặc hiện thông báo trống
-        if (courses.length === 0) {
+        if (sortedCourses.length === 0) {
             coursesGrid.innerHTML = '';
             if (noCoursesMessage) noCoursesMessage.style.display = 'block';
             return;
@@ -171,8 +168,8 @@ function initApp() {
 
         if (noCoursesMessage) noCoursesMessage.style.display = 'none';
 
-        // Tạo HTML cho từng thẻ khóa học
-        coursesGrid.innerHTML = courses.map(course => {
+        // Tạo HTML cho từng thẻ khóa học (Đã tích hợp dự phòng lỗi ảnh onerror)
+        coursesGrid.innerHTML = sortedCourses.map(course => {
             const isFree = course.price === 0;
             const priceDisplay = isFree ? 'FREE' : `$${course.price}`;
             const priceClass = isFree ? 'course-price free' : 'course-price';
@@ -182,7 +179,7 @@ function initApp() {
                 <div class="col course-card-item" data-category="${course.category}" data-price="${course.price}" data-rating="${course.rating}">
                     <div class="course-card">
                         <div class="course-image-wrapper">
-                            <img src="${course.image}" alt="${course.title}" onerror="this.src='images/html.svg'">
+                            <img src="${course.image}" alt="${course.title}" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&auto=format&fit=crop&q=80'">
                             <span class="course-badge">${course.category}</span>
                         </div>
                         <div class="course-body">
@@ -233,35 +230,15 @@ function initApp() {
         });
     }
 
-    // B. Xử lý thanh tìm kiếm trên Navbar (Live search đồng bộ)
-    if (navSearchInput) {
-        navSearchInput.addEventListener('input', function(e) {
-            searchQuery = e.target.value;
-            if (gridSearchInput) gridSearchInput.value = searchQuery; // Đồng bộ ô tìm kiếm lưới
-            renderCourses();
-        });
-    }
-
-    // C. Xử lý thanh tìm kiếm trong lưới khóa học
+    // B. Xử lý thanh tìm kiếm chính trong lưới khóa học
     if (gridSearchInput) {
         gridSearchInput.addEventListener('input', function(e) {
             searchQuery = e.target.value;
-            if (navSearchInput) navSearchInput.value = searchQuery; // Đồng bộ ô tìm kiếm Navbar
             renderCourses();
         });
     }
 
-    // D. Nút xóa nhanh nội dung tìm kiếm trên Navbar
-    if (navSearchClear) {
-        navSearchClear.addEventListener('click', function() {
-            if (navSearchInput) navSearchInput.value = '';
-            if (gridSearchInput) gridSearchInput.value = '';
-            searchQuery = '';
-            renderCourses();
-        });
-    }
-
-    // E. Xử lý sắp xếp (Sort dropdown)
+    // C. Xử lý sắp xếp (Sort dropdown)
     if (sortDropdown) {
         sortDropdown.addEventListener('change', function(e) {
             currentSort = e.target.value;
@@ -269,14 +246,13 @@ function initApp() {
         });
     }
 
-    // F. Nút reset bộ lọc khi không tìm thấy kết quả
+    // D. Nút reset bộ lọc khi không tìm thấy kết quả
     if (btnResetFilters) {
         btnResetFilters.addEventListener('click', function() {
             currentCategory = 'All';
             searchQuery = '';
             currentSort = 'default';
 
-            if (navSearchInput) navSearchInput.value = '';
             if (gridSearchInput) gridSearchInput.value = '';
             if (sortDropdown) sortDropdown.value = 'default';
 

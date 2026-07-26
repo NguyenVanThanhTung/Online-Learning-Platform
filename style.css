@@ -1391,3 +1391,102 @@ a:hover {
         font-size: 0.8rem;
     }
 }
+
+/* --- SỬA LỖI BỐ CỤC KHÓA HỌC (COURSE CARDS LAYOUT) --- */
+
+/* Đảm bảo hàng (row) luôn có flex để các card tự co giãn chiều cao bằng nhau */
+#courses-grid.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Đảm bảo mỗi item chiếm trọn chiều cao bằng cách sử dụng display flex */
+.course-card-item {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Khung card chính bao bọc toàn bộ nội dung */
+.course-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Giúp tất cả các card có chiều cao đồng đều trong một hàng */
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Phần hình ảnh khóa học cố định tỉ lệ, tránh bị bóp méo */
+.course-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+    background-color: #f8fafc;
+}
+
+.course-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Thân card chứa nội dung (Tiêu đề, Giảng viên, Meta) */
+.course-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Đẩy phần footer xuống dưới cùng của card */
+    padding: 1.25rem;
+}
+
+/* Giới hạn tiêu đề khóa học tối đa 2 dòng để tránh lệch layout */
+.course-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.75rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 2.8rem; /* Giữ chỗ cố định cho 2 dòng text */
+}
+
+/* Thông tin giảng viên và danh sách bài học */
+.course-instructor {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 0.75rem;
+}
+
+.course-info-list {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: auto; /* Đẩy xuống sát footer của body */
+    padding-top: 0.5rem;
+    border-top: 1px dashed #f1f5f9;
+}
+
+/* Footer của card chứa giá và nút Enroll luôn thẳng hàng ở đáy */
+.course-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    background-color: #f8fafc;
+    border-top: 1px solid #f1f5f9;
+    margin-top: auto;
+}
