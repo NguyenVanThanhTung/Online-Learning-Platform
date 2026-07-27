@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f7df1e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f0db4f;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#grad)" />
+  <circle cx="400" cy="200" r="100" fill="rgba(0, 0, 0, 0.05)" />
+  <text x="400" y="235" font-family="'Outfit', sans-serif" font-size="110" font-weight="900" fill="#323330" text-anchor="middle">JS</text>
+  <text x="50%" y="390" font-family="'Outfit', sans-serif" font-size="42" font-weight="800" fill="#323330" text-anchor="middle">JavaScript Essentials</text>
+  <text x="50%" y="420" font-family="'Plus Jakarta Sans', sans-serif" font-size="20" fill="rgba(50, 51, 48, 0.75)" text-anchor="middle">Modern ES6+ Programming</text>
+</svg>
