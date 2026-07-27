@@ -83,27 +83,28 @@ function initDetailPage() {
         updateText("sidebar-lessons", totalLessonsCount || course.lessonsCount || 6);
 
         const ratingEl = document.getElementById("course-rating-avg");
-        if (ratingEl) ratingEl.innerHTML = course.rating;
+        if (ratingEl) ratingEl.innerHTML = `<i class="bi bi-star-fill"></i> ${course.rating}`;
 
         if (course.reviewsCount) {
             updateText("course-rating-count", `(${course.reviewsCount} ratings)`);
         }
 
-        const descContainer = document.getElementById("detail-description");
+        const descContainer = document.getElementById("course-description-content");
         if (descContainer && course.description) {
             descContainer.innerHTML = `<p>${course.description}</p>`;
         }
 
-        const learnListContainer = document.getElementById("detail-learn-list");
+        const learnListContainer = document.getElementById("learning-outcomes");
         if (learnListContainer && course.whatYouWillLearn) {
             learnListContainer.innerHTML = course.whatYouWillLearn.map(item => `
-                <div class="col-md-6 mb-2">
-                    <i class="bi bi-check2 text-success me-2"></i> ${item}
+                <div class="learning-bullet-item">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>${escapeHtml(item)}</span>
                 </div>
             `).join('');
         }
 
-        const accordionContainer = document.getElementById("curriculumAccordion");
+        const accordionContainer = document.getElementById("courseCurriculum");
         if (accordionContainer && course.sections) {
             accordionContainer.innerHTML = course.sections.map((sec, index) => {
                 const isShow = index === 0 ? "show" : "";
@@ -111,12 +112,12 @@ function initDetailPage() {
                 const ariaExpanded = index === 0 ? "true" : "false";
 
                 const lessonsHTML = sec.lessons.map(lesson => `
-                    <div class="lesson-list-item p-3 border-bottom d-flex align-items-center justify-content-between">
-                        <div class="lesson-left d-flex align-items-center">
-                            <input type="checkbox" class="lesson-checkbox me-3" id="chk-${lesson.id}" data-lesson-id="${lesson.id}" data-section="${sec.sectionId}">
-                            <label for="chk-${lesson.id}" class="mb-0 cursor-pointer">${lesson.title}</label>
+                    <div class="lesson-list-item" data-lesson-id="${lesson.id}">
+                        <div class="lesson-left">
+                            <input type="checkbox" class="lesson-checkbox me-2" id="chk-${lesson.id}" data-lesson-id="${lesson.id}" data-section="${sec.sectionId}">
+                            <label for="chk-${lesson.id}" class="mb-0 cursor-pointer">${escapeHtml(lesson.title)}</label>
                         </div>
-                        <span class="lesson-duration text-muted small">${lesson.duration}</span>
+                        <span class="lesson-duration">${lesson.duration}</span>
                     </div>
                 `).join('');
 
@@ -137,28 +138,28 @@ function initDetailPage() {
                 `).join('');
 
                 return `
-                    <div class="accordion-item mb-3 border rounded overflow-hidden shadow-sm" id="section-item-${sec.sectionId}">
+                    <div class="accordion-item mb-3 border rounded overflow-hidden shadow-sm" id="accordion-section-${sec.sectionId}">
                         <h2 class="accordion-header" id="heading-${sec.sectionId}">
                             <button class="accordion-button ${isCollapsed} d-flex justify-content-between align-items-center bg-light text-dark fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${sec.sectionId}" aria-expanded="${ariaExpanded}">
                                 <span class="d-flex align-items-center gap-2">
-                                    ${sec.title} (${sec.lessons.length} lessons)
+                                    ${escapeHtml(sec.title)} (${sec.lessons.length} lessons)
                                     <span class="badge-section-completed badge bg-success ms-2" id="badge-section-${sec.sectionId}" style="display: none;"><i class="bi bi-check-circle-fill"></i> Done</span>
                                 </span>
                             </button>
                         </h2>
-                        <div id="collapse-${sec.sectionId}" class="accordion-collapse collapse ${isShow}" data-bs-parent="#curriculumAccordion">
+                        <div id="collapse-${sec.sectionId}" class="accordion-collapse collapse ${isShow}" data-bs-parent="#courseCurriculum">
                             <div class="accordion-body p-0">
-                                <div class="lesson-list">
+                                <div class="lesson-list p-3">
                                     ${lessonsHTML}
                                 </div>
                                 <div class="quiz-section-trigger-wrapper p-3 bg-white text-end border-top">
-                                    <button class="btn btn-outline-primary btn-sm btn-quiz-trigger fw-semibold" data-section="${sec.sectionId}">
-                                        <i class="bi bi-patch-question-fill me-1"></i> Take Quiz: ${sec.title}
+                                    <button class="btn btn-outline-secondary btn-sm btn-quiz-trigger fw-semibold disabled" data-section="${sec.sectionId}" disabled title="Complete all lessons in this section to unlock the quiz">
+                                        <i class="bi bi-patch-question-fill me-1"></i> Take Quiz: ${escapeHtml(sec.title)}
                                     </button>
                                 </div>
                                 <div class="quiz-panel-inline p-4 bg-white border-top" id="quiz-panel-${sec.sectionId}" style="display: none;">
-                                    <div class="quiz-header">
-                                        <h5 class="quiz-title">${sec.quiz.title}</h5>
+                                    <div class="quiz-header mb-3">
+                                        <h5 class="quiz-title fw-bold">${escapeHtml(sec.quiz.title)}</h5>
                                     </div>
                                     <div class="quiz-body">
                                         <form class="quiz-form" data-section="${sec.sectionId}">
@@ -184,20 +185,20 @@ function initDetailPage() {
         if (videoPlaceholder) {
             videoPlaceholder.src = imagePath;
             videoPlaceholder.onerror = function() {
-                this.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&auto=format&fit=crop&q=80';
+                this.src = 'images/javascript.svg';
             };
         }
 
         if (sidebarThumbnail) {
             sidebarThumbnail.src = imagePath;
             sidebarThumbnail.onerror = function() {
-                this.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&auto=format&fit=crop&q=80';
+                this.src = 'images/javascript.svg';
             };
         }
     }
 }
 
-// Update progress bar UI and section completion badges
+// Update progress bar UI and section completion badges/quiz button lock
 function updateProgressBar() {
     const lessonCheckboxes = document.querySelectorAll(".lesson-checkbox");
     const totalLessons = lessonCheckboxes.length > 0 ? lessonCheckboxes.length : 1;
@@ -214,15 +215,33 @@ function updateProgressBar() {
     sections.forEach(sectionId => checkSectionCompletion(sectionId));
 }
 
-// Display completion badge if all section lessons are checked
+// Check section completion to display badge and enable/disable quiz button
 function checkSectionCompletion(sectionId) {
     const checkboxes = document.querySelectorAll(`.lesson-checkbox[data-section="${sectionId}"]`);
     const badge = document.getElementById(`badge-section-${sectionId}`);
+    const quizBtn = document.querySelector(`.btn-quiz-trigger[data-section="${sectionId}"]`);
+    const quizPanel = document.getElementById(`quiz-panel-${sectionId}`);
 
-    if (checkboxes.length === 0 || !badge) return;
+    if (checkboxes.length === 0) return;
 
     const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-    badge.style.display = allChecked ? "inline-block" : "none";
+
+    if (badge) badge.style.display = allChecked ? "inline-block" : "none";
+
+    if (quizBtn) {
+        if (allChecked) {
+            quizBtn.removeAttribute("disabled");
+            quizBtn.classList.remove("disabled", "btn-outline-secondary");
+            quizBtn.classList.add("btn-outline-primary");
+            quizBtn.title = "Click to start quiz";
+        } else {
+            quizBtn.setAttribute("disabled", "true");
+            quizBtn.classList.add("disabled", "btn-outline-secondary");
+            quizBtn.classList.remove("btn-outline-primary");
+            quizBtn.title = "Complete all lessons in this section to unlock the quiz";
+            if (quizPanel) quizPanel.style.display = "none";
+        }
+    }
 }
 
 // Initialize lesson checkboxes and attach change listeners
@@ -258,6 +277,7 @@ function initQuiz() {
 
     quizTriggers.forEach(btn => {
         btn.addEventListener("click", function() {
+            if (this.hasAttribute("disabled")) return;
             const sectionId = this.getAttribute("data-section");
             const panel = document.getElementById(`quiz-panel-${sectionId}`);
             if (panel) {
@@ -377,12 +397,10 @@ function submitQuiz(sectionId, form) {
         const selectedInput = block.querySelector("input[type='radio']:checked");
         const optionItems = block.querySelectorAll(".quiz-option-item");
 
-        // Clear previous feedback styles
         optionItems.forEach(item => {
             item.classList.remove("answer-correct", "answer-incorrect");
         });
 
-        // Highlight only the user's selected choice (green if correct, red if incorrect)
         if (selectedInput) {
             userAnswers[qId] = selectedInput.value;
             const parentItem = selectedInput.closest(".quiz-option-item");
