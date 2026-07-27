@@ -22,6 +22,9 @@
         const categoryFilter = document.getElementById('category-filter');
         const statusFilter = document.getElementById('status-filter');
         const deleteConfirmButton = document.getElementById('btn-confirm-delete');
+        
+        // 1. Khai báo nút Export CSV
+        const exportCsvButton = document.getElementById('btn-export-csv');
 
         courseModal = new bootstrap.Modal(courseModalElement);
         deleteModal = new bootstrap.Modal(deleteModalElement);
@@ -56,6 +59,11 @@
 
         if (deleteConfirmButton) {
             deleteConfirmButton.addEventListener('click', handleDeleteConfirmed);
+        }
+
+        // 2. Bắt sự kiện Click nút Export CSV
+        if (exportCsvButton) {
+            exportCsvButton.addEventListener('click', handleExportCSV);
         }
 
         if (courseModalElement) {
@@ -161,9 +169,6 @@
 
                 return `
                     <tr data-course-id="${course.id}">
-                        <td>
-                            <input type="checkbox" class="form-check-input row-checkbox" data-id="${course.id}">
-                        </td>
                         <td class="text-muted fw-semibold">${rowNumber}</td>
                         <td>
                             <div class="fw-bold text-dark">${course.title}</div>
@@ -232,7 +237,7 @@
 
             const page = link.getAttribute('data-page');
             const action = link.getAttribute('data-action');
-          
+
             if (page !== null) {
                 currentPage = Number(page);
             }
@@ -390,6 +395,52 @@
         renderCourses();
         deleteModal.hide();
         showToast('Course deleted.');
+    }
+
+    // Hàm xử lý Xuất dữ liệu ra file CSV
+    function handleExportCSV() {
+        const dataToExport = courses;
+
+        if (!dataToExport || dataToExport.length === 0) {
+            showToast('No courses available to export.');
+            return;
+        }
+        const headers = ['ID', 'Title', 'Category', 'Price', 'Lessons', 'Instructor', 'Status'];
+        const csvRows = [headers.join(',')];
+
+        dataToExport.forEach((course) => {
+            const lessons = course.lessonsCount || course.lessonCount || 0;
+            const price = course.price === 0 ? 'FREE' : `$${course.price}`;
+            const row = [
+                course.id,
+                `"${(course.title || '').replace(/"/g, '""')}"`,
+                `"${(course.category || '').replace(/"/g, '""')}"`,
+                `"${price}"`,
+                lessons,
+                `"${(course.instructor || '').replace(/"/g, '""')}"`,
+                `"${(course.status || 'Published').replace(/"/g, '""')}"`
+            ];
+            csvRows.push(row.join(','));
+        });
+
+        // Tiền tố \uFEFF đảm bảo hiển thị đúng Tiếng Việt/Unicode trên Excel
+        const csvContent = '\uFEFF' + csvRows.join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        const filename = `learnhub_all_courses_${new Date().toISOString().slice(0, 10)}.csv`;
+
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        showToast(`Exported all ${dataToExport.length} course(s) to CSV.`);
     }
 
     function showToast(message) {
