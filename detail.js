@@ -1,18 +1,60 @@
-/**
- * Lesson progress tracking & dynamic quiz handler for multiple sections
- */
-
 const urlParams = new URLSearchParams(window.location.search);
 const courseId = urlParams.get('id') || '1';
 
-// Lắng nghe DOMContentLoaded để dựng giao diện trước, sau đó mới kích hoạt tiến độ & quiz
 document.addEventListener("DOMContentLoaded", () => {
     initDetailPage();
     initProgress();
     initQuiz();
 });
 
-// Render dynamic content on the course detail page
+// Get completed lessons array from localStorage
+function getCompletedLessons() {
+    return JSON.parse(localStorage.getItem(`completedLessons_${courseId}`)) || [];
+}
+
+// Save completed lessons array to localStorage
+function saveCompletedLessons(lessons) {
+    localStorage.setItem(`completedLessons_${courseId}`, JSON.stringify(lessons));
+}
+
+// Get sections that passed the quiz from localStorage
+function getPassedQuizzes() {
+    return JSON.parse(localStorage.getItem(`passedQuizzes_${courseId}`)) || [];
+}
+
+// Save passed quiz section to localStorage
+function savePassedQuiz(sectionId) {
+    const passed = getPassedQuizzes();
+    const secStr = String(sectionId);
+    if (!passed.includes(secStr)) {
+        passed.push(secStr);
+        localStorage.setItem(`passedQuizzes_${courseId}`, JSON.stringify(passed));
+    }
+}
+
+// Remove section from passed list when retaking
+function removePassedQuiz(sectionId) {
+    let passed = getPassedQuizzes();
+    passed = passed.filter(id => id !== String(sectionId));
+    localStorage.setItem(`passedQuizzes_${courseId}`, JSON.stringify(passed));
+}
+
+// Get saved quiz options selected by user
+function getSavedAnswers(sectionId) {
+    return JSON.parse(localStorage.getItem(`quizAnswers_${courseId}_sec${sectionId}`)) || {};
+}
+
+// Save selected quiz options to localStorage
+function saveQuizAnswers(sectionId, answers) {
+    localStorage.setItem(`quizAnswers_${courseId}_sec${sectionId}`, JSON.stringify(answers));
+}
+
+// Remove saved quiz options from localStorage
+function removeSavedAnswers(sectionId) {
+    localStorage.removeItem(`quizAnswers_${courseId}_sec${sectionId}`);
+}
+
+// Render dynamic course content on detail page
 function initDetailPage() {
     const videoPlaceholder = document.getElementById('video-thumbnail-placeholder');
     const sidebarThumbnail = document.getElementById('course-sidebar-thumbnail');
@@ -61,7 +103,6 @@ function initDetailPage() {
             `).join('');
         }
 
-        // Render multiple sections into curriculumAccordion dynamically
         const accordionContainer = document.getElementById("curriculumAccordion");
         if (accordionContainer && course.sections) {
             accordionContainer.innerHTML = course.sections.map((sec, index) => {
@@ -156,17 +197,7 @@ function initDetailPage() {
     }
 }
 
-// Retrieve completed lessons array from localStorage
-function getCompletedLessons() {
-    return JSON.parse(localStorage.getItem(`completedLessons_${courseId}`)) || [];
-}
-
-// Save completed lessons array to localStorage
-function saveCompletedLessons(lessons) {
-    localStorage.setItem(`completedLessons_${courseId}`, JSON.stringify(lessons));
-}
-
-// Update global progress bar and check section completion badges
+// Update progress bar UI and section completion badges
 function updateProgressBar() {
     const lessonCheckboxes = document.querySelectorAll(".lesson-checkbox");
     const totalLessons = lessonCheckboxes.length > 0 ? lessonCheckboxes.length : 1;
@@ -183,7 +214,7 @@ function updateProgressBar() {
     sections.forEach(sectionId => checkSectionCompletion(sectionId));
 }
 
-// Check if all lessons in a section are checked, display badge if true
+// Display completion badge if all section lessons are checked
 function checkSectionCompletion(sectionId) {
     const checkboxes = document.querySelectorAll(`.lesson-checkbox[data-section="${sectionId}"]`);
     const badge = document.getElementById(`badge-section-${sectionId}`);
@@ -194,7 +225,7 @@ function checkSectionCompletion(sectionId) {
     badge.style.display = allChecked ? "inline-block" : "none";
 }
 
-// Initialize lesson checkboxes event listeners and state
+// Initialize lesson checkboxes and attach change listeners
 function initProgress() {
     const lessonCheckboxes = document.querySelectorAll(".lesson-checkbox");
     const completed = getCompletedLessons();
@@ -221,7 +252,7 @@ function initProgress() {
     updateProgressBar();
 }
 
-// Initialize quiz toggle and submit form event listeners
+// Initialize quiz triggers, submit listener, and restore saved state
 function initQuiz() {
     const quizTriggers = document.querySelectorAll(".btn-quiz-trigger");
 
@@ -242,32 +273,122 @@ function initQuiz() {
             submitQuiz(sectionId, e.target);
         }
     });
+
+    restorePassedQuizzes();
 }
 
-// Calculate score, apply style classes (.answer-correct, .answer-incorrect) and handle pass/fail rules (>= 70%)
+// Restore UI, selected options, and feedback colors for previously passed quizzes
+function restorePassedQuizzes() {
+    const passedQuizzes = getPassedQuizzes();
+    
+    passedQuizzes.forEach(sectionId => {
+        const feedbackBox = document.getElementById(`quiz-feedback-${sectionId}`);
+        const submitBtn = document.getElementById(`btn-quiz-submit-${sectionId}`);
+        const retakeBtn = document.getElementById(`btn-quiz-retake-${sectionId}`);
+        const nextBtn = document.getElementById(`btn-quiz-next-${sectionId}`);
+        const form = document.querySelector(`.quiz-form[data-section="${sectionId}"]`);
+
+        const savedAnswers = getSavedAnswers(sectionId);
+        if (form && savedAnswers) {
+            const questionBlocks = form.querySelectorAll(".quiz-question-block");
+            
+            questionBlocks.forEach(block => {
+                const qId = block.getAttribute("data-qid");
+                const correctVal = block.getAttribute("data-correct");
+                const selectedVal = savedAnswers[qId];
+
+                if (selectedVal) {
+                    const radioInput = block.querySelector(`input[name="sec${sectionId}-${qId}"][value="${selectedVal}"]`);
+                    if (radioInput) {
+                        radioInput.checked = true;
+                        const parentItem = radioInput.closest(".quiz-option-item");
+                        if (parentItem) {
+                            if (selectedVal === correctVal) {
+                                parentItem.classList.add("answer-correct");
+                            } else {
+                                parentItem.classList.add("answer-incorrect");
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        if (feedbackBox) {
+            feedbackBox.style.display = "block";
+            feedbackBox.className = "quiz-feedback-box p-3 mt-3 alert alert-success pass";
+            feedbackBox.innerHTML = `<h6 class="fw-bold mb-1"><i class="bi bi-check-circle-fill me-1"></i> You have already passed this quiz!</h6>`;
+            
+            if (submitBtn) submitBtn.style.display = "none";
+            
+            if (retakeBtn) {
+                retakeBtn.style.display = "inline-block";
+                retakeBtn.onclick = function() {
+                    if (form) form.reset();
+                    removePassedQuiz(sectionId);
+                    removeSavedAnswers(sectionId);
+                    feedbackBox.style.display = "none";
+                    retakeBtn.style.display = "none";
+                    if (nextBtn) nextBtn.style.display = "none";
+                    if (submitBtn) submitBtn.style.display = "inline-block";
+                    
+                    if (form) {
+                        form.querySelectorAll(".quiz-option-item").forEach(item => {
+                            item.classList.remove("answer-correct", "answer-incorrect");
+                        });
+                    }
+                };
+            }
+
+            const nextSectionId = parseInt(sectionId) + 1;
+            const nextCollapse = document.getElementById(`collapse-${nextSectionId}`);
+
+            if (nextBtn) {
+                if (nextCollapse) {
+                    nextBtn.style.display = "inline-block";
+                    nextBtn.className = "btn btn-success btn-sm";
+                    nextBtn.innerHTML = `Continue to next section <i class="bi bi-arrow-right"></i>`;
+                    nextBtn.onclick = function() {
+                        new bootstrap.Collapse(nextCollapse, { toggle: true });
+                        nextCollapse.scrollIntoView({ behavior: 'smooth' });
+                    };
+                } else {
+                    nextBtn.style.display = "inline-block";
+                    nextBtn.className = "btn btn-dark btn-sm";
+                    nextBtn.innerHTML = `<i class="bi bi-trophy-fill me-1"></i> Course Completed!`;
+                    nextBtn.onclick = null;
+                }
+            }
+        }
+    });
+}
+
+// Evaluate quiz answers, highlight user selections, and persist score
 function submitQuiz(sectionId, form) {
     const feedbackBox = document.getElementById(`quiz-feedback-${sectionId}`);
     const questionBlocks = form.querySelectorAll(".quiz-question-block");
     let score = 0;
     const totalQuestions = questionBlocks.length;
+    const userAnswers = {};
 
     questionBlocks.forEach(block => {
+        const qId = block.getAttribute("data-qid");
         const correctVal = block.getAttribute("data-correct");
         const selectedInput = block.querySelector("input[type='radio']:checked");
         const optionItems = block.querySelectorAll(".quiz-option-item");
 
+        // Clear previous feedback styles
         optionItems.forEach(item => {
             item.classList.remove("answer-correct", "answer-incorrect");
-            const radioInput = item.querySelector("input[type='radio']");
-            if (radioInput && radioInput.value === correctVal) {
-                item.classList.add("answer-correct");
-            }
         });
 
+        // Highlight only the user's selected choice (green if correct, red if incorrect)
         if (selectedInput) {
+            userAnswers[qId] = selectedInput.value;
             const parentItem = selectedInput.closest(".quiz-option-item");
             if (selectedInput.value === correctVal) {
                 score++;
+                if (parentItem) parentItem.classList.add("answer-correct");
             } else {
                 if (parentItem) parentItem.classList.add("answer-incorrect");
             }
@@ -284,6 +405,8 @@ function submitQuiz(sectionId, form) {
 
         const handleRetake = function() {
             form.reset();
+            removePassedQuiz(sectionId);
+            removeSavedAnswers(sectionId);
             feedbackBox.style.display = "none";
             retakeBtn.style.display = "none";
             if (nextBtn) nextBtn.style.display = "none";
@@ -296,6 +419,9 @@ function submitQuiz(sectionId, form) {
         };
 
         if (percentage >= 70) {
+            savePassedQuiz(sectionId);
+            saveQuizAnswers(sectionId, userAnswers);
+
             feedbackBox.className = "quiz-feedback-box p-3 mt-3 alert alert-success pass";
             feedbackBox.innerHTML = `<h6 class="fw-bold mb-1"><i class="bi bi-check-circle-fill me-1"></i> Score: ${score} / ${totalQuestions} correct — You passed! (${percentage}% ≥ 70%)</h6>`;
             if (submitBtn) submitBtn.style.display = "none";
